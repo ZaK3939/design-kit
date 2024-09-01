@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // import { useOpenPanel } from '@openpanel/nextjs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 
 interface Project {
   name: string;
@@ -52,13 +52,18 @@ export default function Home() {
             <CardTitle>{project.name}</CardTitle>
             {project.contact && <CardDescription>Contact: {project.contact}</CardDescription>}
           </CardHeader>
-          <CardContent>
+          <CardFooter className='flex justify-between'>
             <Button asChild>
               <a href={project.designKitUrl} target='_blank' rel='noopener noreferrer'>
                 View Design Kit
               </a>
             </Button>
-          </CardContent>
+            {project.contact && (
+              <Button variant='outline' asChild>
+                <a href={`mailto:${project.contact}`}>Contact</a>
+              </Button>
+            )}
+          </CardFooter>
         </Card>
       ))}
     </div>
