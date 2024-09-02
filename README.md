@@ -1,24 +1,31 @@
 ## Contributing
 
-We welcome contributions from the community! Here's how you can contribute:
+We welcome contributions! Here's a simple way to add or update project information:
 
-### Adding or Updating Project Data
+1. Go to our [projects.json file](https://github.com/ZaK3939/design-kit/blob/main/public/projects.json) on GitHub.
 
-1. Fork the repository.
-2. Clone your forked repository to your local machine.
-3. Navigate to the `public` directory.
-4. Open the `projects.json` file.
-5. Add or update project information in the following format:
+2. Click the edit (pencil) icon in the top right corner of the file view.
 
-```json
-{
-  "name": "Project Name",
-  "designKitUrl": "https://link-to-design-kit",
-  "contact": "contact@email.com"
-}
-```
+3. Add your project information at the end of the file, following this format:
 
-6. Ensure that your JSON is valid. You can use tools like [JSONLint](https://jsonlint.com/) to validate your JSON.
-7. Commit your changes with a meaningful commit message.
-8. Push your changes to your forked repository.
-9. Create a Pull Request to the main repository.
+   ```json
+   {
+     "name": "Your Project Name",
+     "designKitUrl": "https://link-to-your-design-kit",
+     "contact": "your@email.com (or null if no contact)"
+   }
+   ```
+
+4. At the bottom of the page, write a short description of your changes (e.g., "Add ProjectX design kit").
+
+5. Select "Create a new branch for this commit and start a pull request".
+
+6. Click "Propose changes".
+
+7. On the next page, click "Create pull request".
+
+That's it! We'll review your submission and merge it if everything looks good.
+
+Need help? Feel free to [open an issue](https://github.com/ZaK3939/design-kit/issues/new) and we'll guide you through the process.
+
+Thank you for contributing to the Crypto Design Kit Manager!
