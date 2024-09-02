@@ -14,7 +14,7 @@ We welcome contributions from the community! Here's how you can contribute:
 {
   "name": "Project Name",
   "designKitUrl": "https://link-to-design-kit",
-  "contact": "contact@email.com" // or null if no contact is available
+  "contact": "contact@email.com"
 }
 ```
 
