@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
 type Project = {
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'GET') {
     try {
       const filePath = path.join(process.cwd(), 'public', 'projects.json');
-      const fileContents = await fs.promises.readFile(filePath, 'utf8');
+      const fileContents = await fs.readFile(filePath, 'utf8');
       const projects: Project[] = JSON.parse(fileContents);
 
       const { q } = req.query;
