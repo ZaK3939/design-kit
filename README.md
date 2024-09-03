@@ -28,4 +28,4 @@ That's it! We'll review your submission and merge it if everything looks good.
 
 Need help? Feel free to [open an issue](https://github.com/ZaK3939/design-kit/issues/new) and we'll guide you through the process.
 
-Thank you for contributing to the Crypto Design Kit Manager!
+Thank you for contributing to the Crypto Design Kit!
