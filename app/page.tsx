@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface Project {
   name: string;
@@ -33,19 +34,22 @@ export default function Home() {
   const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className='min-h-screen flex flex-col'>
-      <header className='bg-gray-100 py-4'>
+    <div className='min-h-screen flex flex-col dark:bg-gray-900'>
+      <header className='bg-gray-100 dark:bg-gray-800 py-4'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <h1 className='text-3xl font-bold'>Crypto Design Kit</h1>
-          <a
-            href='https://github.com/ZaK3939/design-kit'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900'
-          >
-            <GitHubLogoIcon className='w-6 h-6' />
-            <span>View on GitHub</span>
-          </a>
+          <h1 className='text-3xl font-bold dark:text-white'>Crypto Design Kit</h1>
+          <div className='flex items-center space-x-4'>
+            <ThemeToggle />
+            <a
+              href='https://github.com/ZaK3939/design-kit'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+            >
+              <GitHubLogoIcon className='w-6 h-6' />
+              <span>View on GitHub</span>
+            </a>
+          </div>
         </div>
       </header>
 
@@ -60,10 +64,12 @@ export default function Home() {
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {filteredProjects.map((project) => (
-            <Card key={project.name} className='flex flex-col justify-between'>
+            <Card key={project.name} className='flex flex-col justify-between dark:bg-gray-800'>
               <CardHeader>
-                <CardTitle className='text-xl'>{project.name}</CardTitle>
-                {project.contact && <CardDescription className='text-sm'>Contact: {project.contact}</CardDescription>}
+                <CardTitle className='text-xl dark:text-white'>{project.name}</CardTitle>
+                {project.contact && (
+                  <CardDescription className='text-sm dark:text-gray-300'>Contact: {project.contact}</CardDescription>
+                )}
               </CardHeader>
               <CardContent className='flex-grow'>{/* You can add more project details here if needed */}</CardContent>
               <CardFooter className='flex justify-between'>
@@ -83,14 +89,14 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className='bg-gray-100 py-4 mt-8'>
+      <footer className='bg-gray-100 dark:bg-gray-800 py-4 mt-8'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <p>&copy; 2024 Crypto Design Kit</p>
+          <p className='dark:text-white'>&copy; 2024 Crypto Design Kit</p>
           <a
             href='https://x.com/W3ArtistNews'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900'
+            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
           >
             <TwitterLogoIcon className='w-6 h-6' />
             <span>Follow us on X</span>
