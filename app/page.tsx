@@ -7,6 +7,7 @@ import { GitHubLogoIcon, TwitterLogoIcon, ClipboardIcon } from '@radix-ui/react-
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { motion } from 'framer-motion';
 
 interface Project {
   name: string;
@@ -57,17 +58,19 @@ export default function Home() {
   };
 
   return (
-    <div className='min-h-screen flex flex-col dark:bg-gray-900'>
-      <header className='bg-gray-100 dark:bg-gray-800 py-4'>
+    <div className='min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500'>
+      <header className='bg-white dark:bg-gray-900 shadow-md py-4 transition-colors duration-500'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <h1 className='text-3xl font-bold dark:text-white'>Base Dapps Design Kit</h1>
+          <h1 className='text-3xl font-bold text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500'>
+            Base Dapps Design Kit
+          </h1>
           <div className='flex items-center space-x-4'>
             <ThemeToggle />
             <a
               href='https://github.com/ZaK3939/design-kit'
               target='_blank'
               rel='noopener noreferrer'
-              className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+              className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-300'
             >
               <GitHubLogoIcon className='w-6 h-6' />
               <span className='hidden sm:inline'>View on GitHub</span>
@@ -78,7 +81,7 @@ export default function Home() {
 
       <main className='flex-grow container mx-auto px-4 py-8'>
         <Input
-          className='mb-6 max-w-md mx-auto'
+          className='mb-12 max-w-md mx-auto shadow-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 transition-all duration-300'
           type='text'
           placeholder='Search projects...'
           value={searchTerm}
@@ -86,60 +89,74 @@ export default function Home() {
         />
 
         {Object.entries(groupedProjects).map(([category, categoryProjects]) => (
-          <div key={category} className='mb-8'>
-            <h2 className='text-xl font-semibold mb-4 dark:text-white bg-gray-100 dark:bg-gray-800 p-2 rounded'>
+          <motion.div
+            key={category}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className='mb-16'
+          >
+            <h2 className='text-3xl font-bold mb-8 text-gray-800 dark:text-gray-200 border-b-2 border-blue-500 dark:border-purple-500 pb-2 inline-block'>
               {category}
             </h2>
-            <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8'>
               {categoryProjects.map((project) => (
-                <div
+                <motion.div
                   key={project.name}
-                  className='flex flex-col items-center justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 cursor-pointer'
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:shadow-xl'
                   onClick={() => setSelectedProject(project)}
                 >
                   <Image
                     src={project.iconUrl || '/icons/placeholder.png'}
                     alt={project.name}
-                    width={48}
-                    height={48}
-                    className='mb-2'
+                    width={64}
+                    height={64}
+                    className='mb-4 rounded-full'
                   />
-                  <p className='text-xs font-medium dark:text-white text-center'>{project.name}</p>
-                </div>
+                  <p className='text-sm font-medium text-gray-800 dark:text-gray-200 text-center'>{project.name}</p>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
 
         <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-          <DialogContent>
+          <DialogContent className='bg-white dark:bg-gray-800 rounded-lg shadow-2xl'>
             {selectedProject && (
               <>
                 <DialogHeader>
-                  <DialogTitle>{selectedProject.name}</DialogTitle>
+                  <DialogTitle className='text-2xl font-bold text-gray-800 dark:text-gray-200'>
+                    {selectedProject.name}
+                  </DialogTitle>
                 </DialogHeader>
-                <div className='flex items-center space-x-4 mt-4'>
+                <div className='flex items-center space-x-6 mt-6'>
                   <Image
                     src={selectedProject.iconUrl || '/icons/placeholder.png'}
                     alt={selectedProject.name}
-                    width={64}
-                    height={64}
+                    width={96}
+                    height={96}
+                    className='rounded-full shadow-lg'
                   />
                   <div>
-                    <div className='flex items-center space-x-2 mb-2'>
-                      <a
-                        href={selectedProject.designKitUrl}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='text-blue-500 hover:underline'
-                      >
-                        🎨 Design Kit
-                      </a>
-                    </div>
+                    <a
+                      href={selectedProject.designKitUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300'
+                    >
+                      🎨 View Design Kit
+                    </a>
                     {selectedProject.contact && (
-                      <div className='flex items-center space-x-2'>
-                        <p className='text-sm'>{selectedProject.contact}</p>
-                        <Button size='icon' variant='ghost' onClick={() => copyToClipboard(selectedProject.contact!)}>
+                      <div className='mt-4 flex items-center space-x-2'>
+                        <p className='text-sm text-gray-600 dark:text-gray-400'>{selectedProject.contact}</p>
+                        <Button
+                          size='icon'
+                          variant='outline'
+                          onClick={() => copyToClipboard(selectedProject.contact!)}
+                          className='hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300'
+                        >
                           <ClipboardIcon className='w-4 h-4' />
                         </Button>
                       </div>
@@ -152,9 +169,11 @@ export default function Home() {
         </Dialog>
 
         {filteredProjects.length === 0 && (
-          <div className='text-center'>
-            <p className='mb-4 dark:text-white'>No projects found. Would you like to add this project?</p>
-            <Button asChild>
+          <div className='text-center mt-12'>
+            <p className='mb-4 text-gray-600 dark:text-gray-400'>
+              No projects found. Would you like to add this project?
+            </p>
+            <Button asChild className='bg-purple-500 hover:bg-purple-600 text-white transition-colors duration-300'>
               <a href='https://github.com/ZaK3939/design-kit' target='_blank' rel='noopener noreferrer'>
                 Submit a PR on GitHub
               </a>
@@ -163,14 +182,14 @@ export default function Home() {
         )}
       </main>
 
-      <footer className='bg-gray-100 dark:bg-gray-800 py-4 mt-8'>
+      <footer className='bg-white dark:bg-gray-900 py-6 mt-8 shadow-inner transition-colors duration-500'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <p className='dark:text-white'>&copy; 2024 Crypto Design Kit</p>
+          <p className='text-gray-600 dark:text-gray-400'>&copy; 2024 Crypto Design Kit</p>
           <a
             href='https://x.com/W3ArtistNews'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300'
           >
             <TwitterLogoIcon className='w-6 h-6' />
             <span className='hidden sm:inline'>Follow us on X</span>
