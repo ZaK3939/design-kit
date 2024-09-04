@@ -2,116 +2,162 @@
   {
     "name": "Basepaint",
     "designKitUrl": "https://hackmd.io/@uTlMZA23Qz-cK8e7PqQt0A/rkOAbFIhn",
-    "contact": null
+    "contact": null,
+    "category": "Art",
+    "iconUrl": "/icons/basepaint.png"
   },
   {
     "name": "Stryke",
     "designKitUrl": "https://docs.stryke.xyz/references/media-kit",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/stryke.png"
   },
   {
     "name": "Frenpet",
     "designKitUrl": "https://docs.frenpet.xyz/Overview/branding",
-    "contact": null
+    "contact": null,
+    "category": "Gaming",
+    "iconUrl": "/icons/frenpet.png"
   },
   {
     "name": "Speedtracer",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "Gaming",
+    "iconUrl": "/icons/speedtracer.png"
   },
   {
     "name": "Dot",
     "designKitUrl": "https://dot.fan/all",
-    "contact": null
+    "contact": null,
+    "category": "Art",
+    "iconUrl": "/icons/dot.png"
   },
   {
     "name": "Vrbs",
     "designKitUrl": "https://revolution.mypinata.cloud/ipfs/QmWTAMVMX1w7GSdVnmLh2xAkGFkXeRrsMuPEKgH2gs7nkn",
-    "contact": null
+    "contact": null,
+    "category": "Art",
+    "iconUrl": "/icons/vrbs.png"
   },
   {
     "name": "Paragraph",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "Content",
+    "iconUrl": "/icons/paragraph.png"
   },
   {
     "name": "Zora",
     "designKitUrl": "https://zora.co",
-    "contact": null
+    "contact": null,
+    "category": "Art",
+    "iconUrl": "/icons/zora.png"
   },
   {
     "name": "Uniswap",
     "designKitUrl": "https://github.com/Uniswap/brand-assets/tree/main/Uniswap",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/uniswap.png"
   },
   {
     "name": "Seamless Protocol",
     "designKitUrl": "https://docs.seamlessprotocol.com/get-started/brand-kit",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/seamless.png"
   },
   {
     "name": "PoolTogether",
     "designKitUrl": "https://www.figma.com/community/file/1309277420331106706",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/pooltogether.png"
   },
   {
     "name": "Reserve Protocol",
     "designKitUrl": "https://github.com/reserve-protocol/brand-assets",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/reserve-protocol.png"
   },
   {
     "name": "Aerodrome",
     "designKitUrl": "https://aerodrome.finance/brand",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/aerodrome.png"
   },
   {
     "name": "Brett",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "Meme",
+    "iconUrl": "/icons/brett.png"
   },
   {
     "name": "Higher",
     "designKitUrl": "https://rounds.wtf/higher/",
-    "contact": null
+    "contact": null,
+    "category": "Meme",
+    "iconUrl": "/icons/higher.png"
   },
   {
     "name": "Moonwell",
     "designKitUrl": "https://docs.extrafi.io/extra_finance/resources/brand-assets",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/moonwell.png"
   },
   {
     "name": "Extra Finance",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/extra-finance.png"
   },
   {
     "name": "Yellow Collective",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "Art",
+    "iconUrl": "/icons/yellow-collective.png"
   },
   {
     "name": "Phi Protocol",
     "designKitUrl": "https://github.com/PHI-LABS-INC/phi-objects/blob/main/guidelines/brand-notes.md",
-    "contact": "contact@philand.xyz"
+    "contact": "contact@philand.xyz",
+    "category": "Art",
+    "iconUrl": "/icons/phi.png"
   },
   {
     "name": "Base",
     "designKitUrl": "https://github.com/base-org/brand-kit",
-    "contact": null
+    "contact": null,
+    "category": "Infrastructure",
+    "iconUrl": "/icons/base.png"
   },
   {
     "name": "Avantis",
     "designKitUrl": "https://docs.avantisfi.com/support/avantis-brand-kit",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/avantis.png"
   },
   {
     "name": "Cygnus Finance",
     "designKitUrl": "",
-    "contact": null
+    "contact": null,
+    "category": "DeFi",
+    "iconUrl": "/icons/cygnus-finance.png"
   },
   {
     "name": "Build.top",
     "designKitUrl": "https://www.figma.com/design/C6VaYovGCC8ykY76q4aoem/BUILD---Community?node-id=2001-38&t=L1wLxsMVpVGOxk78-0",
-    "contact": null
+    "contact": null,
+    "category": "Identity",
+    "iconUrl": "/icons/build-top.png"
   }
 ]
