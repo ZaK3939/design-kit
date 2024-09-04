@@ -125,7 +125,7 @@ export default function About() {
               Web3 ecosystem.
             </p>
             <p className='text-sm text-muted-foreground'>
-              Whether you're a designer, developer, or enthusiast, this platform provides valuable insights into the
+              Whether you are a designer, developer, or enthusiast, this platform provides valuable insights into the
               visual languages of different projects, enabling informed decisions and inspiring new creations. Remember
               to always respect intellectual property rights and reach out to project teams when in doubt about usage
               permissions.
