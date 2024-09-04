@@ -3,11 +3,17 @@
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { GitHubLogoIcon, TwitterLogoIcon, ClipboardIcon } from '@radix-ui/react-icons';
+import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { ExternalLink, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 interface Project {
   name: string;
@@ -15,12 +21,80 @@ interface Project {
   contact: string | null;
   category: string | null;
   iconUrl: string | null;
+  description?: string;
 }
+
+const ProjectDialog = ({
+  project,
+  isOpen,
+  onOpenChange,
+}: {
+  project: Project | null;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}) => {
+  const { toast } = useToast();
+
+  if (!project) return null;
+
+  const copyContact = () => {
+    if (project.contact) {
+      navigator.clipboard.writeText(project.contact);
+      toast({
+        title: 'Contact copied',
+        description: 'The contact information has been copied to your clipboard.',
+      });
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle className='flex items-center space-x-2'>
+            <Avatar className='h-10 w-10'>
+              <AvatarImage src={project.iconUrl || ''} alt={project.name} />
+              <AvatarFallback>{project.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <span>{project.name}</span>
+          </DialogTitle>
+        </DialogHeader>
+        <div className='grid gap-4 py-4'>
+          {project.description && <p className='text-sm text-muted-foreground'>{project.description}</p>}
+          {project.category && (
+            <div className='flex items-center space-x-2'>
+              <span className='text-sm font-medium'>Category:</span>
+              <Badge variant='secondary'>{project.category}</Badge>
+            </div>
+          )}
+          {project.contact && (
+            <div className='flex items-center justify-between'>
+              <span className='text-sm text-muted-foreground'>{project.contact}</span>
+              <Button variant='outline' size='icon' onClick={copyContact}>
+                <Copy className='h-4 w-4' />
+              </Button>
+            </div>
+          )}
+        </div>
+        <Separator />
+        <DialogFooter className='sm:justify-start'>
+          <Button asChild className='w-full'>
+            <a href={project.designKitUrl} target='_blank' rel='noopener noreferrer'>
+              <ExternalLink className='mr-2 h-4 w-4' />
+              View Design Kit
+            </a>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [randomizedCategories, setRandomizedCategories] = useState<string[]>([]);
 
   useEffect(() => {
     fetchProjects();
@@ -31,13 +105,21 @@ export default function Home() {
       const response = await fetch('/projects.json');
       const data = await response.json();
       setProjects(data);
+
+      const categories = Array.from(new Set(data.map((project: Project) => project.category || 'Other'))) as string[];
+      setRandomizedCategories(shuffleArray(categories));
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
   };
 
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
+  // Fisher-Yates shuffle algorithm
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   };
 
   const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -51,129 +133,91 @@ export default function Home() {
     return acc;
   }, {} as Record<string, Project[]>);
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Contact copied to clipboard!');
-    });
-  };
-
   return (
-    <div className='min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500'>
-      <header className='bg-white dark:bg-gray-900 shadow-md py-4 transition-colors duration-500'>
+    <div className='min-h-screen flex flex-col bg-background'>
+      <header className='bg-card shadow-md py-4'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <h1 className='text-3xl font-bold text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500'>
+          <h1 className='text-3xl font-bold text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600'>
             Base Dapps Design Kit
           </h1>
           <div className='flex items-center space-x-4'>
+            <Link href='/about'>
+              <Button variant='ghost'>About</Button>
+            </Link>
             <ThemeToggle />
-            <a
-              href='https://github.com/ZaK3939/design-kit'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-300'
-            >
-              <GitHubLogoIcon className='w-6 h-6' />
-              <span className='hidden sm:inline'>View on GitHub</span>
-            </a>
+            <Button variant='ghost' asChild>
+              <a
+                href='https://github.com/ZaK3939/design-kit'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex items-center space-x-2'
+              >
+                <GitHubLogoIcon className='w-5 h-5' />
+                <span className='hidden sm:inline'>View on GitHub</span>
+              </a>
+            </Button>
           </div>
         </div>
       </header>
 
       <main className='flex-grow container mx-auto px-4 py-8'>
         <Input
-          className='mb-12 max-w-md mx-auto shadow-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 transition-all duration-300'
+          className='mb-12 max-w-md mx-auto'
           type='text'
           placeholder='Search projects...'
           value={searchTerm}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {Object.entries(groupedProjects).map(([category, categoryProjects]) => (
-          <motion.div
-            key={category}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className='mb-16'
-          >
-            <h2 className='text-3xl font-bold mb-8 text-gray-800 dark:text-gray-200 border-b-2 border-blue-500 dark:border-purple-500 pb-2 inline-block'>
-              {category}
-            </h2>
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8'>
-              {categoryProjects.map((project) => (
-                <motion.div
-                  key={project.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:shadow-xl'
-                  onClick={() => setSelectedProject(project)}
-                >
-                  <Image
-                    src={project.iconUrl || '/icons/placeholder.png'}
-                    alt={project.name}
-                    width={64}
-                    height={64}
-                    className='mb-4 rounded-full'
-                  />
-                  <p className='text-sm font-medium text-gray-800 dark:text-gray-200 text-center'>{project.name}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+        {randomizedCategories.map((category) => {
+          const categoryProjects = groupedProjects[category];
+          if (!categoryProjects || categoryProjects.length === 0) return null;
 
-        <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-          <DialogContent className='bg-white dark:bg-gray-800 rounded-lg shadow-2xl'>
-            {selectedProject && (
-              <>
-                <DialogHeader>
-                  <DialogTitle className='text-2xl font-bold text-gray-800 dark:text-gray-200'>
-                    {selectedProject.name}
-                  </DialogTitle>
-                </DialogHeader>
-                <div className='flex items-center space-x-6 mt-6'>
-                  <Image
-                    src={selectedProject.iconUrl || '/icons/placeholder.png'}
-                    alt={selectedProject.name}
-                    width={96}
-                    height={96}
-                    className='rounded-full shadow-lg'
-                  />
-                  <div>
-                    <a
-                      href={selectedProject.designKitUrl}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300'
-                    >
-                      🎨 View Design Kit
-                    </a>
-                    {selectedProject.contact && (
-                      <div className='mt-4 flex items-center space-x-2'>
-                        <p className='text-sm text-gray-600 dark:text-gray-400'>{selectedProject.contact}</p>
-                        <Button
-                          size='icon'
-                          variant='outline'
-                          onClick={() => copyToClipboard(selectedProject.contact!)}
-                          className='hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300'
-                        >
-                          <ClipboardIcon className='w-4 h-4' />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
+          return (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className='mb-16'
+            >
+              <h2 className='text-3xl font-bold mb-8 text-foreground border-b-2 border-primary pb-2 inline-block'>
+                {category}
+              </h2>
+              <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8'>
+                {categoryProjects.map((project) => (
+                  <motion.div
+                    key={project.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className='bg-card rounded-lg shadow-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:shadow-xl'
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    <Image
+                      src={project.iconUrl || '/icons/placeholder.png'}
+                      alt={project.name}
+                      width={64}
+                      height={64}
+                      className='mb-4 rounded-full'
+                    />
+                    <p className='text-sm font-medium text-foreground text-center'>{project.name}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
+
+        <ProjectDialog
+          project={selectedProject}
+          isOpen={!!selectedProject}
+          onOpenChange={(open) => !open && setSelectedProject(null)}
+        />
 
         {filteredProjects.length === 0 && (
           <div className='text-center mt-12'>
-            <p className='mb-4 text-gray-600 dark:text-gray-400'>
-              No projects found. Would you like to add this project?
-            </p>
-            <Button asChild className='bg-purple-500 hover:bg-purple-600 text-white transition-colors duration-300'>
+            <p className='mb-4 text-muted-foreground'>No projects found. Would you like to add this project?</p>
+            <Button asChild>
               <a href='https://github.com/ZaK3939/design-kit' target='_blank' rel='noopener noreferrer'>
                 Submit a PR on GitHub
               </a>
@@ -181,19 +225,20 @@ export default function Home() {
           </div>
         )}
       </main>
-
-      <footer className='bg-white dark:bg-gray-900 py-6 mt-8 shadow-inner transition-colors duration-500'>
+      <footer className='bg-card py-6 mt-8 shadow-inner'>
         <div className='container mx-auto px-4 flex justify-between items-center'>
-          <p className='text-gray-600 dark:text-gray-400'>&copy; 2024 Crypto Design Kit</p>
-          <a
-            href='https://x.com/W3ArtistNews'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='flex items-center space-x-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300'
-          >
-            <TwitterLogoIcon className='w-6 h-6' />
-            <span className='hidden sm:inline'>Follow us on X</span>
-          </a>
+          <p className='text-muted-foreground'>&copy; 2024 Crypto Design Kit</p>
+          <Button variant='ghost' asChild>
+            <a
+              href='https://x.com/W3ArtistNews'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='flex items-center space-x-2'
+            >
+              <TwitterLogoIcon className='w-5 h-5' />
+              <span className='hidden sm:inline'>Follow us on X</span>
+            </a>
+          </Button>
         </div>
       </footer>
     </div>

@@ -130,7 +130,8 @@
     "designKitUrl": "https://github.com/PHI-LABS-INC/phi-objects/blob/main/guidelines/brand-notes.md",
     "contact": "contact@philand.xyz",
     "category": "Art",
-    "iconUrl": "/icons/phi.png"
+    "iconUrl": "/icons/phi.png",
+    "description": "test"
   },
   {
     "name": "Base",
